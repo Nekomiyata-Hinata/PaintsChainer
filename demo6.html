@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:wb="http://open.weibo.com/wb">
+  <head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#c90000">
+<meta name="apple-mobile-web-app-title" content="PaintsChainer">
+<meta name="application-name" content="PaintsChainer">
+<link rel="apple-touch-icon" sizes="57x57" href="/images/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="/images/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="/images/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="/images/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="/images/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="/images/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="/images/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="/images/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192"  href="/images/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/images/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/images/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff">
+<link rel="alternate" hreflang="ja" href="/index_ja.html">
+<link rel="alternate" hreflang="zh" href="/index_zh.html">
+<link rel="alternate" hreflang="en" href="/index_en.html">
+<title>PaintsChainer -线稿自动上色服务-</title>
+<!-- Canvas toBlob polyfill -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/javascript-canvas-to-blob/3.8.0/js/canvas-to-blob.min.js"></script>
+<!-- jQuery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<!-- jQuery Cookie -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<!-- jQuery UI -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<!-- bootstrap -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://tjs.sjs.sinajs.cn/open/api/js/wb.js"></script>
+<!-- font-awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+<!-- Mobile detect -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/mobile-detect/1.3.6/mobile-detect.min.js"></script>
+<!-- main -->
+<link rel="stylesheet" href="css/paints_chainer.css?v=1540873098">
+<script src="https://cdn.ravenjs.com/3.19.1/raven.min.js" crossorigin="anonymous"></script>
+<script type="text/javascript">
+  window.i18n_locales = {"warn_too_large_filesize":"Image too large to colorize","tanpopo":"蒲公英","satsuki":"皋月杜鹃","canna":"美人蕉属","panda":"大熊猫","shirokuma":"北极熊","paint":"上色","share":"分享","download":"下载","upload_other":"上传其他图像","edit_color":"上色","edit_line":"编辑线稿","line_simplify":"描线","auto_paint":"自动预览","preset_image_title":"","preset_image_title_2":"","preset_image_1":"Illustration by Ogata-san","preset_image_2":"Illustration by Momo-san","preset_image_3":"Illustration by Momo-san","preset_image_4":"Illustration by Momo-san","preset_image_5":"Illustration by Derori-san","preset_image_6":"Illustration by Imomushi-san"}
+</script>
+<script src="js/paints_chainer.js?v=1540873098"></script>
+
+    <link rel="stylesheet" href="css/index.css?v=1540873098">
+  </head>
+  <body id="colorize-page">
+    <nav id="top-nav" class="navbar navbar-default">
+  <div class="nav-container container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+      </button>
+      <div class="logo">
+        <a href="index_zh.html">
+          <img src="images/design-v2/logo.svg" width="138" height="32" />
+        </a>
+      </div>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+          <span class="handle upload-button">
+            <img src="images/design-v2/upload.svg" />
+            上传
+          </span>
+        </li>
+        <li>
+          <span class="handle preset-button">
+            <img src="images/design-v2/brush.svg" />
+            利用范例进行试用
+          </span>
+        </li>
+        <li>
+          <a class="handle" href="/webui/howto/">
+            <img src="images/design-v2/info-q.svg" />
+            使用方法
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+    <div id="main-container">
+      <div id="app" class="app-init"></div>
+
+      <div id="tagline">
+        <div class="photo-description">
+          <a href="https://paintschainer-pr.preferred.tech/chiena-news/" target="_blank">
+            <ruby>絵<rt>えー</rt>愛<rt>あい</rt></ruby> ちえな
+          </a>
+        </div>
+        <div id="cover-image">
+          <div id="back-photo"></div>
+        </div>
+        <div id="cover-ui">
+          <div class="main-tagline">用AI为你的画自动上色！</div>
+          <div class="hover-button upload-button">
+            <img src="images/design-v2/upload_white.svg" width="22" height="20" />
+            上传图像
+          </div>
+          <div class="hover-button preset-button">
+            <img src="images/design-v2/pencil_box_white.svg" />
+            利用范例进行试用
+          </div>
+        </div>
+      </div>
+
+      <div id="pr-section">
+        <div class="headline">
+          <div class="point">
+            <a href="/webui/howto/">
+              <div id="pr-section-point1">
+                <img src="images/design-v2/index/pr_line_before.jpg" />
+              </div>
+              <div class="caption">
+                <h2>可提取草图或照片的线稿</h2>
+              </div>
+            </a>
+          </div>
+          <div class="point">
+            <a href="/webui/howto/">
+              <div id="pr-section-point2">
+                <img src="images/design-v2/index/pr_hint_before.jpg" />
+              </div>
+              <div class="caption">
+                <h2>可自由指定颜色</h2>
+              </div>
+            </a>
+          </div>
+          <div class="point">
+            <a href="/webui/howto/">
+              <div id="pr-section-point3">
+                <img src="images/design-v2/index/index_pr_spot3.jpg" />
+              </div>
+              <div class="caption">
+                <h2>可选择上色风格</h2>
+              </div>
+            </a>
+          </div>
+          <div class="point">
+            <a href="https://sketch.pixiv.net" target="_blank">
+              <div id="pr-section-point4">
+                <img src="images/design-v2/index/index_pr_spot4.png" />
+              </div>
+              <div class="caption">
+                <h2>也可在pixiv Sketch体验自动上色</h2>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="more">
+          <div class="wire-button howto-button">
+            <a href="/webui/howto/">
+              <img src="images/design-v2/info-q.svg" width="22" height="22" />
+              查看详细使用方法
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div id="info-section">
+        <div class="info-container">
+          <div id="news">
+            <h2>通知</h2>
+            <div class="box">
+              <p>
+              我们在此表示对北海道胆振东部区域地震遇难者的诚挚哀悼，以及对遇难者家属与受伤者的深切慰问。<br/>
+              由于苫东厚真发电厂于今日恢复运作，我们恢复了 PaintsChainer 因供电限制而暂停的的一部分功能（美人蕉属与编辑线稿）。<br/>
+              感谢您的理解与支持。
+            </p>
+            <p>
+              我们在此表示对北海道区域地震遇难者的诚挚哀悼，以及对遇难者家属与受伤者的深切慰问。<br/>
+              本次大规模地震导致北海道全岛停电，PaintsChainer 也受此次停电的影响，于9月6日15时（北京时间）开始暂停一部分功能（美人蕉属与编辑线稿）。<br/>
+              由此给您带来的不便，我们深感抱歉，敬请谅解。
+            </p>
+            <p>我们更新了PaintsChainer网站。我们添加了可以遮蔽和照明的新的绘画风格的 “美人蕉”。</p>
+            <p><a href="https://twitter.com/PaintsChainer/status/895601234895290369">添加了新功能：描线工具。将自己手绘的图画照下来后，可以用工具描出线稿。也可以描出其他类型的照片中的线稿。</a></p>
+            </div>
+          </div>
+          <div id="social-timeline">
+            <h2>微博话题</h2>
+            <div class="box" style="height:600px; width:100%; overflow:scroll; background-color:white;">
+              <div>
+            <wb:topic column="n" border="n" width="350" height="500" tags="paintschainer" color="333333%2Cffffff%2C0078b6%2Ccccccc%2C333333%2Cfafeff%2C0078b6%2Ccccccc%2Ccccccc%2Ce9f4fb" language="zh_cn" version="base" footbar="y" url="%23" filter="n" ></wb:topic>
+          </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer id="footer">
+  <div class="container">
+    <div class="staff">
+      <div class="provided-by">
+        <h3>提供</h3>
+        <a href="https://www.preferred-networks.jp/" target="_blank">
+          <img src="images/design-v2/PFN_logo.png" width="14"> Preferred Networks
+        </a>
+      </div>
+      <div class="collaborated-by">
+        <h3>协助</h3>
+        <div class="horizontal-box">
+          <p>
+            <a href="https://sketch.pixiv.net/" target="_blank">
+              <img src="images/design-v2/pixivsketch-logo.png" height="16" width="16"> pixiv Sketch
+	    </a>
+	  </p>
+          <p>
+            <a href="https://chainer.org/" target="_blank">
+              <img src="images/design-v2/chainer-64.png" height="18" width="18"> Chainer
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="tool">
+      <div class="logo">
+        <a href="index_zh.html">
+          <img src="images/design-v2/logo_white.svg" width="138" height="32" />
+        </a>
+      </div>
+      <div class="bottom-nav">
+        <span class="handle upload-button">
+          <img src="images/design-v2/upload_white.svg" />
+          上传
+        </span>
+        <span class="handle preset-button">
+          <img src="images/design-v2/brush_white.svg" />
+          利用范例进行试用
+        </span>
+        <a class="handle" href="/webui/howto/">
+          <img src="images/design-v2/info_q_white.svg" />
+          使用方法
+        </a>
+      </div>
+      <div class="links">
+        <div>
+          <a href="/webui/terms/" target="_blank">利用规则</a>
+        </div>
+        <div>
+          <a href="/webui/privacy/" target="_blank">隐私权政策</a>
+        </div>
+        <div class="social">
+          <a href="https://github.com/pfnet/PaintsChainer" target="_blank">
+            <i class="fa fa-github-alt"></i>
+          </a>
+          <a href="https://twitter.com/paintschainer" target="_blank">
+            <i class="fa fa-twitter"></i>
+          </a>
+          <a href="https://facebook.com/PaintsChainer" target="_blank">
+            <i class="fa fa-facebook"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<div class="modal fade" id="info-dialog" tabindex="-1" role="dialog" aria-labelledby="infoDialogLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="infoDialogLabel"><img src="//paintschainer-cdn.preferred.tech/images/paintschainer-64x64.png" width="24" style="display:inline" />&nbsp;Information</h4>
+      </div>
+      <div class="modal-body">
+        <p><b>欢迎来到PaintsChainer！</b></p>
+            <p>利用PaintsChainer时，请您务必认可以下利用规则以及隐私权政策。</p>
+            <p>使用前必读。</p>
+        <ul>
+          <li><a href="/webui/terms/" target="_blank">利用规则</a></li>
+          <li><a href="/webui/privacy/" target="_blank">隐私权政策</a></li>
+        </ul>
+        <p>2017年3月8日</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal" id="info-button">同意</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  if (location.hostname.indexOf('.preferred.tech') > -1) {
+    // Sentry
+    Raven.config('https://9ea58920e9224cd4803001d7dd7c7c08@sentry.io/235845').install();
+
+    // Google Analytics
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-91036510-1', 'auto');
+    ga('send', 'pageview');
+  }
+</script>
+
+    <div class="pixivsketchdraw" id="pxvsketch"></div>
+
+  </body>
+</html>
